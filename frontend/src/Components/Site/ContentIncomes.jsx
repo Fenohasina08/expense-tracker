@@ -32,8 +32,6 @@ const ContentIncomes = () => {
     key: "createdAt",
     direction: "ascending",
   });
-
-  // Nouveau : pour la suppression stylisée
   const [deleteIncomeId, setDeleteIncomeId] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -78,7 +76,6 @@ const ContentIncomes = () => {
     setIsOtherType(false);
   };
 
-  // Nouveau : suppression stylisée
   const handleDeleteClick = (id) => {
     setDeleteIncomeId(id);
     setIsDeleteModalOpen(true);
@@ -157,16 +154,16 @@ const ContentIncomes = () => {
   const latestDate = filteredIncomes.length > 0 ? filteredIncomes[filteredIncomes.length - 1].createdAt?.split("T")[0] : "N/A";
 
   return (
-    <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center p-4 sm:p-6">
-      <h1 className="text-3xl md:text-4xl font-extrabold mb-8 text-cyan-700">Income Dashboard</h1>
+    <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center p-3 sm:p-6">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-6 sm:mb-8 text-cyan-700">Income Dashboard</h1>
 
       {/* Filters */}
-      <div className="w-full bg-white rounded-2xl p-6 mb-6 shadow-lg grid grid-cols-1 sm:grid-cols-5 gap-6">
+      <div className="w-full bg-white rounded-2xl p-4 sm:p-6 mb-6 shadow-lg grid grid-cols-1 sm:grid-cols-5 gap-4 sm:gap-6">
         <div>
-          <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+          <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-700">
             <Calendar className="w-4 h-4 text-cyan-600" /> Month
           </label>
-          <select name="month" value={filters.month} onChange={handleFilterChange} className="w-full border border-cyan-200 rounded-lg p-2 focus:ring-2 focus:ring-cyan-400">
+          <select name="month" value={filters.month} onChange={handleFilterChange} className="w-full border border-cyan-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-cyan-400">
             <option value="">All</option>
             {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
               <option key={m} value={m}>{new Date(0, m - 1).toLocaleString("default", { month: "long" })}</option>
@@ -174,101 +171,107 @@ const ContentIncomes = () => {
           </select>
         </div>
         <div>
-          <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+          <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-700">
             <Clock className="w-4 h-4 text-cyan-600" /> Year
           </label>
-          <select name="year" value={filters.year} onChange={handleFilterChange} className="w-full border border-cyan-200 rounded-lg p-2 focus:ring-2 focus:ring-cyan-400">
+          <select name="year" value={filters.year} onChange={handleFilterChange} className="w-full border border-cyan-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-cyan-400">
             <option value="">All</option>
             {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map(y => (<option key={y} value={y}>{y}</option>))}
           </select>
         </div>
         <div>
-          <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+          <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-700">
             <Tag className="w-4 h-4 text-cyan-600" /> Type
           </label>
-          <select name="type" value={filters.type} onChange={handleFilterChange} className="w-full border border-cyan-200 rounded-lg p-2 focus:ring-2 focus:ring-cyan-400">
+          <select name="type" value={filters.type} onChange={handleFilterChange} className="w-full border border-cyan-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-cyan-400">
             <option value="">All</option>
             {uniqueTypes.map(type => <option key={type} value={type}>{type}</option>)}
           </select>
         </div>
         <div>
-          <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+          <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-700">
             <DollarSign className="w-4 h-4 text-cyan-600" /> Min
           </label>
-          <input type="number" name="minAmount" value={filters.minAmount} onChange={handleFilterChange} placeholder="Min" className="w-full border border-cyan-200 rounded-lg p-2 focus:ring-2 focus:ring-cyan-400"/>
+          <input type="number" name="minAmount" value={filters.minAmount} onChange={handleFilterChange} placeholder="Min" className="w-full border border-cyan-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-cyan-400"/>
         </div>
         <div>
-          <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+          <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-700">
             <Filter className="w-4 h-4 text-cyan-600" /> Max
           </label>
-          <input type="number" name="maxAmount" value={filters.maxAmount} onChange={handleFilterChange} placeholder="Max" className="w-full border border-cyan-200 rounded-lg p-2 focus:ring-2 focus:ring-cyan-400"/>
+          <input type="number" name="maxAmount" value={filters.maxAmount} onChange={handleFilterChange} placeholder="Max" className="w-full border border-cyan-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-cyan-400"/>
         </div>
       </div>
 
-      {/* Summary Tickets adoucis */}
-      <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-        <div className="bg-cyan-400 text-white rounded-2xl shadow-md p-6 flex flex-col items-center">
-          <DollarSign className="w-8 h-8 mb-2"/>
-          <p className="font-semibold">Total Income</p>
-          <p className="text-lg">{totalAmount.toFixed(2)} Ar</p>
+      {/* Summary Tickets */}
+      <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="bg-cyan-400 text-white rounded-2xl shadow-md p-4 sm:p-6 flex flex-col items-center">
+          <DollarSign className="w-6 h-6 sm:w-8 sm:h-8 mb-2"/>
+          <p className="font-semibold text-sm sm:text-base">Total Income</p>
+          <p className="text-base sm:text-lg">{totalAmount.toFixed(2)} Ar</p>
         </div>
-        <div className="bg-cyan-300 text-white rounded-2xl shadow-md p-6 flex flex-col items-center">
-          <Coins className="w-8 h-8 mb-2"/>
-          <p className="font-semibold">Count</p>
-          <p className="text-lg">{incomeCount}</p>
+        <div className="bg-cyan-300 text-white rounded-2xl shadow-md p-4 sm:p-6 flex flex-col items-center">
+          <Coins className="w-6 h-6 sm:w-8 sm:h-8 mb-2"/>
+          <p className="font-semibold text-sm sm:text-base">Count</p>
+          <p className="text-base sm:text-lg">{incomeCount}</p>
         </div>
-        <div className="bg-cyan-200 text-white rounded-2xl shadow-md p-6 flex flex-col items-center">
-          <BarChart2 className="w-8 h-8 mb-2"/>
-          <p className="font-semibold">Latest</p>
-          <p className="text-lg">{latestDate}</p>
+        <div className="bg-cyan-200 text-white rounded-2xl shadow-md p-4 sm:p-6 flex flex-col items-center">
+          <BarChart2 className="w-6 h-6 sm:w-8 sm:h-8 mb-2"/>
+          <p className="font-semibold text-sm sm:text-base">Latest</p>
+          <p className="text-base sm:text-lg">{latestDate}</p>
         </div>
       </div>
 
       {/* Table */}
-      <table className="w-full bg-white rounded-2xl shadow-xl table-auto border-collapse">
-        <thead className="bg-cyan-600 text-white">
-          <tr>
-            {incomesColumns.map(col => (
-              <th key={col.key} className="p-4 cursor-pointer text-sm" onClick={() => col.key && requestSort(col.key)}>
-                {col.name} {sortConfig.key === col.key ? (sortConfig.direction === "ascending" ? "↑" : "↓") : ""}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {filteredIncomes.map((income, index) => (
-            <tr key={income.id} className="hover:bg-cyan-50 transition-all border-b border-cyan-100">
-              <td className="p-4 text-center text-gray-700">{index + 1}</td>
-              <td className="p-4 text-center text-gray-700">{income.amount} Ar</td>
-              <td className="p-4 text-center text-gray-700">{income.date?.split("T")[0]}</td>
-              <td className="p-4 text-center text-gray-700">{income.type}</td>
-              <td className="p-4 text-center text-gray-700">{income.description}</td>
-              <td className="p-4 text-center text-gray-700">{income.createdAt?.split("T")[0]}</td>
-              <td className="p-4 text-center flex justify-center gap-2">
-                <button className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-md text-sm" onClick={() => handleEdit(income)}>Edit</button>
-                <button className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm" onClick={() => handleDeleteClick(income.id)}>Delete</button>
-              </td>
+      <div className="w-full overflow-x-auto bg-white rounded-2xl shadow-xl">
+        <table className="min-w-full table-auto border-collapse">
+          <thead className="bg-cyan-600 text-white">
+            <tr>
+              {incomesColumns.map(col => (
+                <th key={col.key} className="p-2 sm:p-4 cursor-pointer text-xs sm:text-sm" onClick={() => col.key && requestSort(col.key)}>
+                  {col.name} {sortConfig.key === col.key ? (sortConfig.direction === "ascending" ? "↑" : "↓") : ""}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredIncomes.map((income, index) => (
+              <tr key={income.id} className="hover:bg-cyan-50 transition-all border-b border-cyan-100">
+                <td className="p-2 sm:p-4 text-center text-gray-700 text-xs sm:text-sm">{index + 1}</td>
+                <td className="p-2 sm:p-4 text-center text-gray-700 text-xs sm:text-sm">{income.amount} Ar</td>
+                <td className="p-2 sm:p-4 text-center text-gray-700 text-xs sm:text-sm">{income.date?.split("T")[0]}</td>
+                <td className="p-2 sm:p-4 text-center text-gray-700 text-xs sm:text-sm">{income.type}</td>
+                <td className="p-2 sm:p-4 text-center text-gray-700 text-xs sm:text-sm">{income.description}</td>
+                <td className="p-2 sm:p-4 text-center text-gray-700 text-xs sm:text-sm">{income.createdAt?.split("T")[0]}</td>
+                <td className="p-2 sm:p-4 text-center flex justify-center gap-1 sm:gap-2">
+                  <button className="bg-yellow-400 hover:bg-yellow-500 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-md text-xs sm:text-sm" onClick={() => handleEdit(income)}>Edit</button>
+                  <button className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-md text-xs sm:text-sm" onClick={() => handleDeleteClick(income.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      {/* Add/Edit Form Button & Modal */}
-      <button className="mt-6 bg-cyan-600 text-white px-6 py-3 rounded-xl" onClick={() => { setIsFormOpen(!isFormOpen); setEditingIncomeId(null); setIsOtherType(false); }}>
+      {/* Add/Edit Button */}
+      <button 
+        className="mt-6 bg-cyan-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl text-sm sm:text-base"
+        onClick={() => { setIsFormOpen(!isFormOpen); setEditingIncomeId(null); setIsOtherType(false); }}
+      >
         {editingIncomeId ? 'Edit Income' : 'Add Income'}
       </button>
 
+      {/* Form Modal */}
       {isFormOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-8 w-full max-w-lg">
-            <h2 className="text-2xl font-bold mb-4">{editingIncomeId ? 'Edit Income' : 'Add Income'}</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-5 sm:p-8 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">{editingIncomeId ? 'Edit Income' : 'Add Income'}</h2>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <input type="number" name="amount" placeholder="Amount" value={formData.amount} onChange={handleChange} className="border rounded-lg p-2" required />
-              <input type="date" name="date" value={formData.date} onChange={handleChange} className="border rounded-lg p-2" required />
+              <input type="number" name="amount" placeholder="Amount" value={formData.amount} onChange={handleChange} className="border rounded-lg p-2 text-sm sm:text-base" required />
+              <input type="date" name="date" value={formData.date} onChange={handleChange} className="border rounded-lg p-2 text-sm sm:text-base" required />
 
               {/* Type avec option Other */}
               <div>
-                <label>Type</label>
+                <label className="text-sm sm:text-base">Type</label>
                 {!isOtherType ? (
                   <select
                     name="type"
@@ -281,7 +284,7 @@ const ContentIncomes = () => {
                         setFormData({ ...formData, type: e.target.value });
                       }
                     }}
-                    className="w-full border rounded-lg p-2"
+                    className="w-full border rounded-lg p-2 text-sm sm:text-base"
                     required
                   >
                     <option value="">Select type</option>
@@ -295,40 +298,40 @@ const ContentIncomes = () => {
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                     placeholder="Enter new type"
-                    className="w-full border rounded-lg p-2"
+                    className="w-full border rounded-lg p-2 text-sm sm:text-base"
                     required
                   />
                 )}
                 {isOtherType && (
-                  <button type="button" className="text-sm text-cyan-600 mt-1" onClick={() => setIsOtherType(false)}>Choose from existing types</button>
+                  <button type="button" className="text-xs sm:text-sm text-cyan-600 mt-1" onClick={() => setIsOtherType(false)}>Choose from existing types</button>
                 )}
               </div>
 
-              <input type="text" name="description" placeholder="Description" value={formData.description} onChange={handleChange} className="border rounded-lg p-2" />
+              <input type="text" name="description" placeholder="Description" value={formData.description} onChange={handleChange} className="border rounded-lg p-2 text-sm sm:text-base" />
 
               <div className="flex justify-end gap-2 mt-2">
-                <button type="button" className="px-4 py-2 bg-gray-400 rounded" onClick={() => setIsFormOpen(false)}>Cancel</button>
-                <button type="submit" className="px-4 py-2 bg-cyan-600 text-white rounded">{editingIncomeId ? 'Save' : 'Add'}</button>
+                <button type="button" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-400 rounded text-sm sm:text-base" onClick={() => setIsFormOpen(false)}>Cancel</button>
+                <button type="submit" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-cyan-600 text-white rounded text-sm sm:text-base">{editingIncomeId ? 'Save' : 'Add'}</button>
               </div>
             </form>
           </div>
         </div>
       )}
 
-      {/* Modal suppression stylisée */}
+      {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-sm text-center shadow-lg">
-            <p className="text-gray-700 mb-4">Are you sure you want to delete this income?</p>
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-5 sm:p-6 w-full max-w-sm text-center shadow-lg">
+            <p className="text-gray-700 mb-4 text-sm sm:text-base">Are you sure you want to delete this income?</p>
             <div className="flex justify-center gap-4">
               <button
-                className="px-4 py-2 bg-gray-400 rounded hover:bg-gray-500"
+                className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-400 rounded hover:bg-gray-500 text-sm sm:text-base"
                 onClick={() => setIsDeleteModalOpen(false)}
               >
                 Cancel
               </button>
               <button
-                className="px-4 py-2 bg-cyan-600 text-white rounded hover:bg-cyan-700"
+                className="px-3 py-1.5 sm:px-4 sm:py-2 bg-cyan-600 text-white rounded hover:bg-cyan-700 text-sm sm:text-base"
                 onClick={handleConfirmDelete}
               >
                 Delete
@@ -337,7 +340,6 @@ const ContentIncomes = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
