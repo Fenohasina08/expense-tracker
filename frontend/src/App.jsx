@@ -9,6 +9,7 @@ import Settings from './Components/Profile/Settings';
 import Incomes from './Components/Site/Incomes';
 import ExpensePage from "./Components/Site/Expense/ExpensePage";
 import CategoryPage from "./Components/Site/Category/CategoryPage";
+
 function App() {
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -18,7 +19,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="w-full min-h-screen">
       <Routes>
         <Route path="/" element={<Navigate to="/signin" replace />} />
         <Route path="/signin" element={<Signin />} />
@@ -46,7 +47,3 @@ function App() {
 }
 
 export default App;
-
-
- 
- 
