@@ -26,3 +26,6 @@ backend/node-moduls
 fronted/ ./env
 
 node_modules
+node_modules/
+.vite/
+dist/
