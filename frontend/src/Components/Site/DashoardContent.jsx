@@ -34,7 +34,6 @@ const DashboardContent = ({ className, refreshKey }) => {
           remainingBalance: Number(statsRes.data.remainingBalance || 0)
         });
 
-        // Pie chart
         const pastelColors = ["#81D4FA", "#4FC3F7", "#4DD0E1", "#26C6DA", "#80CBC4", "#A5D6A7", "#FFF176"];
         if (pieRes.data?.labels?.length > 0) {
           const labels = pieRes.data.labels;
@@ -52,7 +51,6 @@ const DashboardContent = ({ className, refreshKey }) => {
           });
         }
 
-        // Line chart
         if (barRes.data?.labels?.length > 0) {
           const labels = barRes.data.labels;
           const data = barRes.data.datasets[0].data.map(Number);
@@ -66,7 +64,7 @@ const DashboardContent = ({ className, refreshKey }) => {
                 borderColor: "#4DD0E1",
                 backgroundColor: "rgba(77, 208, 225, 0.2)",
                 fill: true,
-                tension: 0.4,          // lissage courbe
+                tension: 0.4,
                 pointRadius: 5,
                 pointBackgroundColor: "#26C6DA",
                 pointHoverRadius: 6
@@ -74,7 +72,6 @@ const DashboardContent = ({ className, refreshKey }) => {
             ]
           });
         }
-
       } catch (err) {
         setError(err.response?.data?.message || "Failed to load dashboard data");
       } finally {
@@ -92,63 +89,67 @@ const DashboardContent = ({ className, refreshKey }) => {
       <div className={`flex justify-center items-center h-96 ${className}`}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-cyan-400 mx-auto"></div>
-          <p className="mt-4 text-cyan-700 font-medium">Loading dashboard...</p>
+          <p className="mt-4 text-cyan-700 font-medium text-sm sm:text-base">Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`p-6 flex flex-col gap-8 ${className}`}>
-      {error && <div className="bg-red-50 border border-red-400 p-4 rounded-lg flex items-center gap-2"><AlertCircle className="text-red-600"/> {error}</div>}
+    <div className={`flex flex-col gap-6 md:gap-8 ${className}`}>
+      {error && (
+        <div className="bg-red-50 border border-red-400 p-3 sm:p-4 rounded-lg flex items-center gap-2 text-sm sm:text-base">
+          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {/* Income */}
-        <div className="bg-blue-900 text-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-transform transform hover:scale-105 cursor-pointer">
-          <div className="flex justify-between items-center mb-3">
-            <DollarSign className="w-8 h-8"/>
-            <TrendingUp className="w-5 h-5"/>
+        <div className="bg-blue-900 text-white p-4 sm:p-6 rounded-2xl shadow-md hover:shadow-xl transition-transform transform hover:scale-105 cursor-pointer">
+          <div className="flex justify-between items-center mb-2 sm:mb-3">
+            <DollarSign className="w-6 h-6 sm:w-8 sm:h-8" />
+            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <p className="font-medium">Total Income</p>
-          <p className="text-2xl font-bold mt-1">{totalIncome.toFixed(2)} Ar</p>
+          <p className="font-medium text-sm sm:text-base">Total Income</p>
+          <p className="text-xl sm:text-2xl font-bold mt-1">{totalIncome.toFixed(2)} Ar</p>
         </div>
 
         {/* Expenses */}
-        <div className="bg-blue-800 text-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-transform transform hover:scale-105 cursor-pointer">
-          <div className="flex justify-between items-center mb-3">
-            <CreditCard className="w-8 h-8"/>
-            <TrendingUp className="w-5 h-5"/>
+        <div className="bg-blue-800 text-white p-4 sm:p-6 rounded-2xl shadow-md hover:shadow-xl transition-transform transform hover:scale-105 cursor-pointer">
+          <div className="flex justify-between items-center mb-2 sm:mb-3">
+            <CreditCard className="w-6 h-6 sm:w-8 sm:h-8" />
+            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <p className="font-medium">Total Expenses</p>
-          <p className="text-2xl font-bold mt-1">{totalExpenses.toFixed(2)} Ar</p>
+          <p className="font-medium text-sm sm:text-base">Total Expenses</p>
+          <p className="text-xl sm:text-2xl font-bold mt-1">{totalExpenses.toFixed(2)} Ar</p>
         </div>
 
         {/* Balance */}
-        <div className={`p-6 rounded-2xl shadow-md hover:shadow-xl transition-transform transform hover:scale-105 cursor-pointer ${remainingBalance >=0 ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}>
-          <div className="flex justify-between items-center mb-3">
-            <PieChart className="w-8 h-8"/>
-            <TrendingUp className="w-5 h-5"/>
+        <div className={`p-4 sm:p-6 rounded-2xl shadow-md hover:shadow-xl transition-transform transform hover:scale-105 cursor-pointer ${remainingBalance >=0 ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}>
+          <div className="flex justify-between items-center mb-2 sm:mb-3">
+            <PieChart className="w-6 h-6 sm:w-8 sm:h-8" />
+            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <p className="font-medium">Balance</p>
-          <p className="text-2xl font-bold mt-1">{remainingBalance.toFixed(2)} Ar</p>
+          <p className="font-medium text-sm sm:text-base">Balance</p>
+          <p className="text-xl sm:text-2xl font-bold mt-1">{remainingBalance.toFixed(2)} Ar</p>
         </div>
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-2xl shadow-md">
-          <h3 className="text-lg font-semibold text-cyan-900 mb-4">Expenses by Category</h3>
-          <div className="h-80">
-            <Pie data={pieChartData} options={{ responsive:true, maintainAspectRatio:false }} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+        <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-md">
+          <h3 className="text-base sm:text-lg font-semibold text-cyan-900 mb-4">Expenses by Category</h3>
+          <div className="h-60 md:h-80">
+            <Pie data={pieChartData} options={{ responsive: true, maintainAspectRatio: false }} />
           </div>
         </div>
 
-        {/* Bar */}
-        <div className="bg-white p-6 rounded-2xl shadow-md">
-          <h3 className="text-lg font-semibold text-cyan-900 mb-4">Monthly Spending</h3>
-          <div className="h-80">
-            <Line data={lineChartData} options={{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:true}} }} />
+        <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-md">
+          <h3 className="text-base sm:text-lg font-semibold text-cyan-900 mb-4">Monthly Spending</h3>
+          <div className="h-60 md:h-80">
+            <Line data={lineChartData} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true } } }} />
           </div>
         </div>
       </div>
