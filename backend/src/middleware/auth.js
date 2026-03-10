@@ -1,38 +1,37 @@
-const jwt = require('jsonwebtoken');
-const { RevokedToken, User } = require('../models');
-require('dotenv').config();
+ 
+import jwt from 'jsonwebtoken';
 
+const auth = (req, res, next) => {
+  try {
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
-async function authMiddleware(req, res, next) {
-try {
-const authHeader = req.headers.authorization;
-if (!authHeader) return res.status(401).json({ message: 'Token missing' });
+    if (!token) {
+      return res.status(401).json({ message: 'Accès refusé, token manquant' });
+    }
+ 
+    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 
+     req.user = {
+      id: decoded.id,
+      email: decoded.email,
+      username: decoded.username,
+    };
 
-const parts = authHeader.split(' ');
-if (parts.length !== 2) return res.status(401).json({ message: 'Token format invalid' });
+    next();
+  } catch (error) {
+ 
+    console.error('Auth middleware error:', error);
 
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Token expiré' });
+    }
 
-const token = parts[1];
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Token invalide' });
+    }
 
-    
- const revoked = await RevokedToken.findOne({ where: { token } });
-if (revoked) return res.status(401).json({ message: 'Token revoked' });
+    res.status(401).json({ message: 'Erreur d\'authentification' });
+   }
+};
 
-
-const payload = jwt.verify(token, process.env.JWT_SECRET);
-const user = await User.findByPk(payload.id);
-if (!user) return res.status(401).json({ message: 'Utilisateur introuvable' });
-
-
-req.user = user;
-req.token = token;
-next();
-} catch (err) {
-console.error(err);
-return res.status(401).json({ message: 'Authentification échouée' });
-}
-}
-
-
-module.exports = authMiddleware;
+export default auth;

@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id         Int         @id @default(autoincrement())
+  username   String      @unique
+  email      String      @unique
+  password   String
+  profile    String?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  Incomes    Incomes[]
+  Expenses   Expenses[]
+  Categories Categories[]
+}
+
+model Incomes {
+  id          Int      @id @default(autoincrement())
+  amount      Decimal  @db.Decimal
+  date        DateTime
+  type        String?  @db.VarChar(255)
+  description String?  @db.VarChar(255)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      Int
+  Users       Users    @relation(fields: [userId], references: [id])
+}
+
+model Categories {
+  id        Int        @id @default(autoincrement())
+  name      String     @db.VarChar(255)
+  budget    Decimal    @db.Decimal
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  userId    Int
+  Users     Users      @relation(fields: [userId], references: [id])
+  Expenses  Expenses[]
+}
+
+model Expenses {
+  id          Int        @id @default(autoincrement())
+  amount      Decimal    @db.Decimal
+  date        DateTime
+  type        String?    @db.VarChar(255)
+  description String?    @db.VarChar(255)
+  receipt     String?    @db.VarChar(255)
+  colonne     String?    @db.VarChar(255) 
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  userId      Int
+  categoryId  Int
+  Users       Users      @relation(fields: [userId], references: [id])
+  Categories  Categories @relation(fields: [categoryId], references: [id])
+}

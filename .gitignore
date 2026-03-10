@@ -22,10 +22,13 @@ rad.json
 TestResults.xml
 backend/.env
 backend/uploads
-backend/node-moduls
-fronted/ ./env
+backend/node-modules
+frontend/ ./env
+frontend/node_modules
 
-node_modules
-node_modules/
-.vite/
-dist/
+# Node modules
+frontend/node_modules/
+backend/node_modules/
+# Vite build
+frontend/.vite/
+frontend/dist/
